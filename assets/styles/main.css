@@ -8,11 +8,23 @@ body {
 }
 
 header {
-  padding: 5px;
+  padding: 30px;
   height: 100px;
   background-color: #6600ff;
   color: white;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
 }
+
+.perfil_icon {
+  font-size: 25px;
+}
+
+.logo_page {
+  font-size: 3em;
+}
+
 
 main {
   height: 100vh;
@@ -31,6 +43,10 @@ footer {
   height: 100vh;
   background-color: #34495E;
   color: white;
+}
+
+.sideBar li {
+  margin-top: 10px;
 }
 
 .feed {

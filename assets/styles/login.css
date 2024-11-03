@@ -1,0 +1,224 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #3a3a56;
+}
+
+.container {
+    display: flex;
+    max-width: 800px;
+    width: 100%;
+    background-color: #2b2b3d;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.5s ease;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.image-panel {
+    flex: 1;
+    background-image: url('../images/sinin-signup.png');
+    background-size: cover;
+    padding: 20px;
+    color: #fff;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.image-panel .logo {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.image-panel .back-button {
+    width: 25%;
+    background-color: rgba(63, 63, 85, 0.5);
+    border-radius: 20px;
+    border-width: 0;
+    color: #6756ff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 5px 8px;
+}
+
+.back-button i {
+    margin-left: 6px;
+}
+
+.back-button:hover {
+    background-color: #6756ff;
+    color: white;
+}
+
+.input-panel {
+    flex: 1;
+    background-color: #3f3f55;
+    padding: 40px 20px;
+    color: #fff;
+}
+
+h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+}
+
+#switch-to-register {
+    font-size: 14px;
+    margin-left: 8px;
+    background: #6756ff;
+    border-radius: 999px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: 700;
+    line-height: 24px;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 8px 15px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    word-break: break-word;
+    border: 0;
+}
+
+#switch-to-login {
+    font-size: 14px;
+    margin-left: 8px;
+    background: #6756ff;
+    border-radius: 100px;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: 700;
+    line-height: 24px;
+    opacity: 1;
+    outline: 0 solid transparent;
+    padding: 8px 15px;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    width: fit-content;
+    word-break: break-word;
+    border: 0;
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    margin-bottom: 10px;
+    background-color: #2a2a3d;
+    color: #fff;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.checkbox input {
+    margin-right: 8px;
+}
+
+.checkbox a {
+    color: #6756ff;
+    margin-left: 5px;
+}
+
+.submit-button {
+    padding: 10px;
+    background-color: #6756ff;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.submit-button:hover {
+    box-shadow: #6756ff 0 10px 20px -10px;
+}
+
+.social-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.social-login button {
+    padding: 8px;
+    width: 80%;
+    background-color: #4a4a5f;
+    border: none;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.google-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-btn img{
+    width: 23px;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+
+.facebook-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.facebook-btn img{
+    width: 23px;
+    cursor: pointer;
+    margin-right: 5px;
+}

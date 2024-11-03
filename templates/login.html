@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Cadastro</title>
+    <link rel="stylesheet" href="../assets/styles/login.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container login-container">
+            <div class="image-panel">
+                <div class="logo">Forum WEB</div>
+                <a href="{{url_for('index')}}" class="back-button">Voltar<i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+            <div class="input-panel">
+                <h2>Entrar</h2>
+                <p>Ainda não possui conta?<button id="switch-to-register">Cadastre-se</button></p>
+                <form id="signin-form">
+                    <input type="email" placeholder="Email" required>
+                    <div class="password-group">
+                        <input type="password" placeholder="Digite sua senha" required>
+                    </div>
+                    <button type="submit" class="submit-button">Entrar</button>
+                </form>
+                <div class="social-login">
+                    <p>Ou entre com</p>
+                    <button class="google-btn"><img src="../assets/images/google.png" alt="google-icon">Google</button>
+                    <button class="facebook-btn"><img src="../assets/images/facebook.png" alt="google-icon">Facebook</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-container register-container">
+            <div class="input-panel">
+                <h2>Cadastro</h2>
+                <p>Já possui conta?<button id="switch-to-login">Entrar</button></p>
+                <form id="signup-form">
+                    <div class="input-group">
+                        <input type="text" placeholder="Nome" required>
+                        <input type="text" placeholder="Sobrenome">
+                    </div>
+                    <input type="email" placeholder="Email" required>
+                    <div class="password-group">
+                        <input type="password" placeholder="Crie uma senha" required>
+                    </div>
+                    <label class="checkbox">
+                        <input type="checkbox" required>
+                        Eu concordo com os <a href="#">Termos e Condições</a>
+                    </label>
+                    <button type="submit" class="submit-button">Criar conta</button>
+                </form>
+                <div class="social-login">
+                    <p>Ou registre-se com</p>
+                    <button class="google-btn"><img src="../assets/images/google.png" alt="google-icon">Google</button>
+                    <button class="facebook-btn"><img src="../assets/images/facebook.png" alt="google-icon">Facebook</button>
+                </div>
+            </div>
+            <div class="image-panel">
+                <div class="logo">Forum WEB</div>
+                <a href="{{url_for('index')}}" class="back-button">Voltar<i class="fa-solid fa-arrow-right"></i></a>
+            </div>
+        </div>
+    </div>
+    <script src="../assets/scripts/login.js"></script>
+</body>
+</html>

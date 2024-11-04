@@ -1,7 +1,30 @@
 from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.orm import Mapped, mapped_column
 
 app = Flask(__name__, static_folder='assets')
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///project.db"
 
+
+class Teste(DeclarativeBase):
+    pass
+
+db = SQLAlchemy(model_class=Teste)
+db.init_app(app)
+
+class User(db.Model):
+    id: Mapped[int] = mapped_column(primary_key=True)
+    username: Mapped[str] = mapped_column(unique=True)
+    email: Mapped[str]
+    def __init__(self, username: str, email: str) -> None:
+        super().__init__()
+        self.username = username
+        self.email = email
+
+with app.app_context():
+    db.create_all()
 
 @app.route('/')
 def index():

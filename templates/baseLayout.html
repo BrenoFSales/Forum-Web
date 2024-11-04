@@ -14,7 +14,7 @@
   </head>
   <body class="font-sans">
     <header>
-      <i class="fa-solid fa-earth-americas logo_page"></i>
+      <a href="{{ url_for('index') }}"><i class="fa-solid fa-earth-americas logo_page"></i></a>
       <h1 class="fs-2">Forum WEB</h1>
       {% if user_authenticated %}
         <i class="fa-regular fa-user perfil_icon"></i>

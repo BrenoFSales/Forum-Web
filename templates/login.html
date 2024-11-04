@@ -18,10 +18,10 @@
             <div class="input-panel">
                 <h2>Entrar</h2>
                 <p>Ainda não possui conta?<button id="switch-to-register">Cadastre-se</button></p>
-                <form id="signin-form">
-                    <input type="email" placeholder="Email" required>
+                <form id="signin-form" method="POST">
+                    <input name="email" type="email" placeholder="Email" required>
                     <div class="password-group">
-                        <input type="password" placeholder="Digite sua senha" required>
+                        <input name="senha" type="password" placeholder="Digite sua senha" required>
                     </div>
                     <button type="submit" class="submit-button">Entrar</button>
                 </form>

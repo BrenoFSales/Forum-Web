@@ -1,0 +1,24 @@
+.linha-conexao{
+    position: absolute;
+    width: 5px;
+    border-left: 4px dotted #6e54b5;
+    height: 50px;
+    left: 50%;
+    top: 100%;
+    transform: translateX(0%);
+}
+
+.fim-conexao  {
+    position: absolute;
+    background-color: #6e54b5;
+    border-radius: 100px;
+    width: 30px;
+    height: 30px;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-55%);
+}
+
+.thread{
+    position: relative;
+}

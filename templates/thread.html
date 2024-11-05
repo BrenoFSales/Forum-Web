@@ -2,11 +2,14 @@
 {% extends "baseLayout.html" %}
 
 {% block content %}
-{{ thread | safe }}
-<div>
-  {% for i in replies %}
-    {{ i | safe}}
-  {% endfor %}
+<div class="container">
+  <div id="super-thread" class="row justify-content-center">
+  {{ thread | safe }}
+  </div>
+  <div id="sub-thread" class="m-auto w-75 row justify-content-center">
+    {% for i in replies %}
+      {{ i | safe}}
+    {% endfor %}
+  </div>
 </div>
-
 {% endblock %}

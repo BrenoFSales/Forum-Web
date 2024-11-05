@@ -3,7 +3,13 @@
   <!-- Header Section with User and Title -->
   <div class="mb-4 border-b pb-2 border-gray-200">
     <h3 class="text-xl font-semibold text-indigo-800">
-      <span class="text-gray-800">{{ post.user.username }}</span> - {{ post.title }}
+      {% if linkable %}
+        <a href="{{ url_for('thread', id=post.id) }}">
+          <span class="text-gray-800">{{ post.user.username }}</span> - {{ post.title }}
+        </a>
+      {% else %}
+        <span class="text-gray-800">{{ post.user.username }}</span> - {{ post.title }}
+      {% endif %}
     </h3>
   </div>
   

@@ -15,7 +15,10 @@
     </ul>
   </div>
   <div class="feed col">
-    foo
+    <h3 class="mt-3 pb-2 border-bottom fs-4">Novas Threads:</h3>
+    {% for i in recent %}
+      {{ i | safe}}
+    {% endfor %}
   </div>
 </div>
 {% endblock %}

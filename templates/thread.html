@@ -1,0 +1,12 @@
+
+{% extends "baseLayout.html" %}
+
+{% block content %}
+{{ thread | safe }}
+<div>
+  {% for i in replies %}
+    {{ i | safe}}
+  {% endfor %}
+</div>
+
+{% endblock %}

@@ -129,9 +129,14 @@ os generos e culturas (mangás não são livros. vire gente!)"),
 def load_user(user_id: str):
     return User.get(user_id)
 
+# preenche as informações do template de um post. também utilizado para renderizar um post pai.
+def post_template(post: Post):
+    return render_template('post.html', post=post)
+
 @app.route('/')
 def index():
-    return render_template("index.html")
+    result = db.session.query(Post).filter(Post.parent_id == None).order_by(Post.id).limit(10).all()
+    return render_template("index.html", recent=[post_template(i) for i in result])
 
 @app.route('/signup', methods=['POST'])
 def register():
@@ -206,10 +211,6 @@ def logout():
 @login_required
 def perfil():
     return render_template('perfil.html')
-
-# preenche as informações do template de um post. também utilizado para renderizar um post pai.
-def post_template(post: Post):
-    return render_template('post.html', post=post)
 
 @app.route('/thread/<id>')
 def thread(id):

@@ -120,9 +120,9 @@ os generos e culturas (mangás não são livros. vire gente!)"),
         db.session.add(User("breno", "breno@email.com", "breno", "br"))
 
         db.session.add_all([
-            Post(1, "teste pai", "essa é a thread pai", "", 1),
-            Post(1, "teste filho 1", "post filho 2", "", 1, 1),
-            Post(1, "teste filho 2", "post filho 3", "", 1, 1),
+            Post(1, "teste pai", "essa é a thread pai", 1, ""),
+            Post(1, "teste filho 1", "post filho 2",    1, "", 1),
+            Post(1, "teste filho 2", "post filho 3",    1, "", 1),
         ])
         db.session.commit()
     except Exception as e:

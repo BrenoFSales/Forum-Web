@@ -4,9 +4,9 @@ import flask
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, relationship
+from sqlalchemy.orm import DeclarativeBase, joinedload, relationship
 from sqlalchemy.orm import Mapped, mapped_column
-from typing import List, override
+from typing import List
 import flask_login
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from sqlalchemy.orm.scoping import Optional
@@ -24,6 +24,9 @@ class Teste(DeclarativeBase):
 db = SQLAlchemy(model_class=Teste)
 db.init_app(app)
 
+# SQLAlchemy não faz migrações por padrão. qualquer alteração feita à essas classes não vai ser
+# refletida no banco imediatamente a não ser que delete ele
+
 class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(unique=True)
@@ -31,7 +34,7 @@ class User(UserMixin, db.Model):
     password: Mapped[str] = mapped_column(nullable=False)
     country_code: Mapped[str] = mapped_column(nullable=False) # ISO 3166-1 alpha-2
     profile_picture: Mapped[str] = mapped_column(nullable=True) # url pra um recurso estático
-    posts: Mapped[List["Post"]] = relationship()
+    posts: Mapped[List["Post"]] = relationship("Post", back_populates="user")
 
     def __init__(self, username: str, email: str, password: str, country_code: str) -> None:
         super().__init__()
@@ -47,15 +50,21 @@ class User(UserMixin, db.Model):
     def __repr__(self) -> str:
         return f'User({self.username}, {self.email})'
 
+# threads e comentários em threads são ambos Post. na há necessidade de criar classes separadas para os dois.
 class Post(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(nullable=True)
     content: Mapped[str] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     attachment: Mapped[str] = mapped_column(nullable=True)
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
-    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("post.id"), nullable=True)
     subforum_id: Mapped[int] = mapped_column(ForeignKey("subforum.id"), nullable=False)
+
+    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("post.id"), nullable=True)
+    replies: Mapped[List["Post"]] = relationship("Post", back_populates="parent", cascade="all, delete-orphan")
+    parent: Mapped[Optional["Post"]] = relationship("Post", back_populates="replies", remote_side=[id])
+
+    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
+    user: Mapped["User"] = relationship("User", back_populates="posts")
 
     def __init__(
         self, user_id: int, title: str, content: str, attachment: str, subforum_id: int,
@@ -67,6 +76,10 @@ class Post(db.Model):
         self.attachment = attachment
         self.subforum_id = subforum_id
         self.parent_id = parent_id
+
+    def __repr__(self) -> str:
+        return f'Post(user="{self.user.username}", id={self.id}, replies={len(self.replies)}, \
+title="{self.title}", content="{self.content})"'
 
 class Subforum(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
@@ -80,6 +93,7 @@ class Subforum(db.Model):
         self.description = description
 
 
+# do mesmo modo, alterações feitas nessas entidades não vão alterar o banco. delete o banco e reinicie o projeto.
 with app.app_context():
     db.create_all()
     try:
@@ -101,6 +115,12 @@ os generos e culturas (mangás não são livros. vire gente!)"),
         ])
         db.session.add(User("daniel", "daniel@email.com", "daniel", "br"))
         db.session.add(User("breno", "breno@email.com", "breno", "br"))
+
+        db.session.add_all([
+            Post(1, "teste pai", "essa é a thread pai", "", 1),
+            Post(1, "teste filho 1", "post filho 2", "", 1, 1),
+            Post(1, "teste filho 2", "post filho 3", "", 1, 1),
+        ])
         db.session.commit()
     except Exception as e:
         pass
@@ -141,7 +161,9 @@ def signin():
             result = db.session.query(User).filter_by(email=email, password=password).first()
 
             if result == None:
-                flask.abort(400, "User was not found")
+                flash('Senha incorreta. Tente novamente.') # Retorna mensagem de erro
+                return render_template('login.html')
+
 
             if flask_login.login_user(result): # loga usuário caso true
                 print("Logged in:", result)
@@ -185,6 +207,28 @@ def logout():
 def perfil():
     return render_template('perfil.html')
 
+# preenche as informações do template de um post. também utilizado para renderizar um post pai.
+def post_template(post: Post):
+    return render_template('post.html', post=post)
+
+@app.route('/thread/<id>')
+def thread(id):
+    result = (db.session
+        .query(Post)
+        .options(
+            joinedload(Post.user),
+            joinedload(Post.replies).joinedload(Post.user))
+        .filter(Post.id == id)
+        .first())
+
+    if result is None:
+        flask.abort(400)
+
+    return render_template(
+        'thread.html',
+        thread=post_template(result),
+        replies=[post_template(i) for i in result.replies]
+    )
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

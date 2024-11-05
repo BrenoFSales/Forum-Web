@@ -1,8 +1,15 @@
-<div class="bg-slate-300 m-4 p-4 border-indigo-700 border-2 rounded-3" >
-  <div>
-    <h1 class="text-3xl">Título</h1>
+<div class="bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
+  <!-- Header Section with User and Title -->
+  <div class="mb-4 border-b pb-2 border-gray-200">
+    <h3 class="text-xl font-semibold text-indigo-800">
+      <span class="text-gray-800">{{ post.user.username }}</span>: {{ post.title }}
+    </h3>
   </div>
+  
+  <!-- Content Section -->
   <div>
-    <p>Mensagem!</p>
+    <p class="text-gray-700 leading-relaxed">
+      {{ post.content }}
+    </p>
   </div>
 </div>

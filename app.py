@@ -1,5 +1,7 @@
 from datetime import datetime
 from enum import unique
+import os
+from re import sub
 import flask
 from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
@@ -10,6 +12,7 @@ from typing import List
 import flask_login
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 from sqlalchemy.orm.scoping import Optional
+from werkzeug.wrappers import response
 
 login_manager = LoginManager()
 app = Flask(__name__, static_folder='assets')
@@ -67,7 +70,7 @@ class Post(db.Model):
     user: Mapped["User"] = relationship("User", back_populates="posts")
 
     def __init__(
-        self, user_id: int, title: str, content: str, attachment: str, subforum_id: int,
+        self, user_id: int, title: str, content: str, subforum_id: int, attachment: Optional[str] = None, 
             parent_id: Optional[int] = None) -> None:
         super().__init__()
         self.user_id = user_id
@@ -161,7 +164,7 @@ def signin():
             password = request.form.get('password')
 
             if email is None or password is None:
-                flask.abort(400, "Incorrect form fields")
+                flask.abort(400, "email ou senha inexistentes")
 
             result = db.session.query(User).filter_by(email=email, password=password).first()
 
@@ -174,7 +177,7 @@ def signin():
                 print("Logged in:", result)
                 return flask.redirect(flask.url_for("index"))
             else:
-                flask.abort(400, "Failed to log in user")
+                flask.abort(400, "falha ao logar usuário")
 
     # inutil, porém meu language server reclama sem isso.
     return render_template('login.html')
@@ -188,7 +191,7 @@ def signup():
         password = request.form.get('password')
 
         if username is None or email is None or password is None:
-            flask.abort(400, "Incorrect form fields")
+            flask.abort(400, "usuário, email ou senha inexistentes")
         
         user = User(username, email, password, "br") # Cria um novo objeto da classe 'user'
         db.session.add(user) # Adiciona o ojeto a classe
@@ -223,13 +226,40 @@ def thread(id):
         .first())
 
     if result is None:
-        flask.abort(400)
+        flask.abort(400, "thread não encontrada")
 
     return render_template(
         'thread.html',
         thread=post_template(result),
         replies=[post_template(i) for i in result.replies]
     )
+
+@app.route('/<subforum>/newthread', methods=['POST'])
+def new_thread(subforum: str):
+    user = flask_login.current_user
+
+    subforum_ = db.session.query(Subforum).filter(Subforum.name == subforum).first()
+    if subforum_ is None:
+        flask.abort(400, "subforum não encontrado")
+    subforum_id = subforum_.id
+
+    title = request.form.get('title')
+    content = request.form.get('content')
+    title = request.form.get('title')
+    uploaded_file = request.files.get('profile_picture')
+
+    if title is None or content is None or title is None or uploaded_file is None:
+        flask.abort(400)
+
+    saved = None
+    if uploaded_file.filename != '' and uploaded_file.filename != None:
+        saved = os.path.join('static', uploaded_file.filename)
+        uploaded_file.save(saved)
+
+    post = Post(user.id, title, content, subforum_id, saved)
+    db.session.add(post)
+    db.session.commit()
+    return flask.redirect(flask.url_for(f'/thread/{post.id}'))
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

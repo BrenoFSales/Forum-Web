@@ -17,14 +17,20 @@
         </div>
         <div class="input-panel">
           <h2>Entrar</h2>
-          <p>Ainda não possui conta?<button id="switch-to-register">Cadastre-se</button></p>
+          <p>Ainda não possui conta?<a href="{{ url_for('signup')}}" class="signup">Cadastre-se</a></p>
           <form action="signin" id="signin-form" method="POST">
             <input name="email" type="email" placeholder="Email" required>
             <div class="password-group">
               <input name="senha" type="password" placeholder="Digite sua senha" required>
             </div>
+            <!-- Exibir mensagens de flash -->
+            {% for message in get_flashed_messages() %}
+                <div style="padding: 15px; margin-bottom: 1rem; background-color: #dc3545; color: #fff; border-radius: .3rem; text-align: center;">
+                    {{ message }}
+                </div>
+            {% endfor %}
             <button type="submit" class="submit-button">Entrar</button>
-          </form>
+          </form> 
           <div class="social-login">
             <p>Ou entre com</p>
             <button class="google-btn"><img src="../assets/images/google.png" alt="google-icon">Google</button>
@@ -32,38 +38,6 @@
           </div>
         </div>
       </div>
-
-      <div class="form-container register-container">
-        <div class="input-panel">
-          <h2>Cadastro</h2>
-          <p>Já possui conta?<button id="switch-to-login">Entrar</button></p>
-          <form id="signup-form">
-            <div class="input-group">
-              <input type="text" placeholder="Nome" required>
-              <input type="text" placeholder="Sobrenome">
-            </div>
-            <input type="email" placeholder="Email" required>
-            <div class="password-group">
-              <input type="password" placeholder="Crie uma senha" required>
-            </div>
-            <label class="checkbox">
-              <input type="checkbox" required>
-              Eu concordo com os <a href="#">Termos e Condições</a>
-            </label>
-            <button type="submit" class="submit-button">Criar conta</button>
-          </form>
-          <div class="social-login">
-            <p>Ou registre-se com</p>
-            <button class="google-btn"><img src="../assets/images/google.png" alt="google-icon">Google</button>
-            <button class="facebook-btn"><img src="../assets/images/facebook.png" alt="google-icon">Facebook</button>
-          </div>
-        </div>
-        <div class="image-panel">
-          <div class="logo">Forum WEB</div>
-          <a href="{{url_for('index')}}" class="back-button">Voltar<i class="fa-solid fa-arrow-right"></i></a>
-        </div>
-      </div>
     </div>
-    <script src="../assets/scripts/login.js"></script>
   </body>
 </html>

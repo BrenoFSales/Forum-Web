@@ -90,7 +90,7 @@ form {
     margin-top: 15px;
 }
 
-#switch-to-register {
+.signup {
     font-size: 14px;
     margin-left: 8px;
     background: #6756ff;
@@ -109,9 +109,10 @@ form {
     width: fit-content;
     word-break: break-word;
     border: 0;
+    text-decoration: none;
 }
 
-#switch-to-login {
+.signin {
     font-size: 14px;
     margin-left: 8px;
     background: #6756ff;
@@ -130,6 +131,7 @@ form {
     width: fit-content;
     word-break: break-word;
     border: 0;
+    text-decoration: none;
 }
 
 .input-group {

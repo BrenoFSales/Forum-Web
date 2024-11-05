@@ -4,15 +4,15 @@
 
 <div class="container mt-5">
     <h1 class="mb-4 fs-5">Perfil do Usuário</h1>
-    <a href="#"><button class="btn btn-danger mb-4">Encerrar Sessão</button></a>
+    <a href="{{ url_for('logout') }}"><button class="btn btn-danger mb-4">Encerrar Sessão</button></a>
     <!-- Seção de Informações Pessoais -->
     <div class="card mb-4">
         <div class="card-header">
             Informações Pessoais
         </div>
         <div class="card-body">
-            <p><strong>Nome Completo:</strong> {{ username }}</p>
-            <p><strong>Email:</strong> {{ email }}</p>
+            <p><strong>Nome Completo:</strong> {{ current_user.username }}</p>
+            <p><strong>Email:</strong> {{ current_user.email }}</p>
             <p><strong>Telefone:</strong> (11) 98765-4321</p>
         </div>
     </div>

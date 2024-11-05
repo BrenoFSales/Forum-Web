@@ -1,11 +1,10 @@
 import flask
-from flask import Flask, render_template, url_for, request, redirect
+from flask import Flask, render_template, url_for, request, redirect, flash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped, mapped_column
 from typing import List, override
-import flask_login
-from flask_login import LoginManager, UserMixin
+from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
 
 login_manager = LoginManager()
 app = Flask(__name__, static_folder='assets')
@@ -24,10 +23,12 @@ class User(UserMixin, db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     username: Mapped[str] = mapped_column(unique=True)
     email: Mapped[str]
-    def __init__(self, username: str, email: str) -> None:
+    password: Mapped[str] = mapped_column()
+    def __init__(self, username: str, email: str, password: str) -> None:
         super().__init__()
         self.username = username
         self.email = email
+        self.password = password
 
     @staticmethod
     def get(user_id: str):
@@ -54,47 +55,55 @@ def load_user(user_id: str):
 
 @app.route('/')
 def index():
-    user_authenticated = False;
-    return render_template("index.html", user_authenticated=user_authenticated)
+    return render_template("index.html")
 
 
-@app.route('/signin', methods=['POST'])
+@app.route('/signin', methods=['GET', 'POST'])
 def signin():
-    emailUser = request.form['email']
-    # passUser = request.form['senha']
-    result = db.session.query(User).filter_by(email=emailUser).first()
-
-    if result == None:
-        flask.abort(400, "User was not found")
-
-    if flask_login.login_user(result):
-        print("Logged in:", result)
-        return flask.redirect(flask.url_for("index"))
-    else:
-        flask.abort(400, "Failed to log in user")
-
-@app.route('/login', methods=['GET'])
-def login():
-    emailUser = "daniel@email.com"
-    senhaUser = "123456"
-
+    # Recebe os dados do formulário de login e verifica se os dados são válidos e existem no banco de dados
     if request.method == 'POST':
         email = request.form.get('email')
         senha = request.form.get('senha')
-        print(f"Recebido o forms: {email} e {senha}")
-
-        if email == emailUser and senha == senhaUser:
-            print("Redirecting to perfil")
-            return redirect(url_for('perfil', email=emailUser, senha=senhaUser))
-      
+        
+        user = db.session.query(User).filter_by(email=email).first()
+        if (user and user.password == senha):  # Verificação direta da senha
+                login_user(user) # Realiza o login do usuário na sessão
+                return redirect(url_for('perfil'))
+        else:
+                flash('Senha incorreta. Tente novamente.') # Retorna mensagem de erro ao logar para a tela de login
+    
     return render_template('login.html')
+
+
+@app.route('/signup', methods=['GET', 'POST'])
+def signup():
+    # Recebe os dados do formulário de cadastro
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        
+        user = User(username=username, email=email, password=password) # Cria um novo objeto da classe 'user'
+        db.session.add(user) # Adiciona o ojeto a classe
+        db.session.commit()  # Faz o commit registrando o novo usuário no banco 
+
+        return redirect(url_for('signin'))
+
+    return render_template('cadastro.html')
+
+
+# Rota para logout do Usuário que está atualmente logado
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 
 @app.route('/perfil')
 def perfil():
-    username = "Daniel San"
-    email = request.args.get('email')
-    return render_template('perfil.html', username=username, email=email)
+    return render_template('perfil.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

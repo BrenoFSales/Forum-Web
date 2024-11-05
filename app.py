@@ -161,7 +161,7 @@ def signin():
             result = db.session.query(User).filter_by(email=email, password=password).first()
 
             if result == None:
-                flash('Senha incorreta. Tente novamente.') # Retorna mensagem de erro
+                flash('Usuário ou senha incorretos') # Retorna mensagem de erro
                 return render_template('login.html')
 
 
@@ -183,7 +183,8 @@ def signup():
         password = request.form.get('password')
 
         if username is None or email is None or password is None:
-            flask.abort(400, "Incorrect form fields")
+            flash('Preencha o formulário corretamente')
+            return render_template('cadastro.html')
         
         user = User(username, email, password, "br") # Cria um novo objeto da classe 'user'
         db.session.add(user) # Adiciona o ojeto a classe
@@ -209,6 +210,7 @@ def perfil():
 
 # preenche as informações do template de um post. também utilizado para renderizar um post pai.
 def post_template(post: Post):
+    print(post)
     return render_template('post.html', post=post)
 
 @app.route('/thread/<id>')
@@ -224,11 +226,18 @@ def thread(id):
     if result is None:
         flask.abort(400)
 
+    # return render_template(
+    #     'thread.html',
+    #     thread=post_template(result),
+    #     replies=[post_template(i) for i in result.replies]
+    # )
+
     return render_template(
         'thread.html',
-        thread=post_template(result),
-        replies=[post_template(i) for i in result.replies]
+        thread=result,
+        replies=result.replies
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

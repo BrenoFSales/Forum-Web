@@ -1,0 +1,31 @@
+{% extends "baseLayout.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <!-- Renderiza o post principal -->
+        {% set post = thread %}
+        <div class="w-75 row bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
+            <!-- Header Section with User and Title -->
+            <div class="mb-4 border-b pb-2 border-gray-200">
+            <h3 class="text-xl font-semibold text-red-800">
+                <span class="text-gray-800">{{ post.user.username }}</span>: {{ post.title }}
+            </h3>
+            </div>
+            
+            <!-- Content Section -->
+            <div>
+            <p class="text-gray-700 leading-relaxed">
+                {{ post.content }}
+            </p>
+            </div>
+        </div>
+
+        <!-- Renderiza cada resposta como um post ('post.html') separado -->
+        {% for reply in replies %}
+            {% set post = reply %}
+            {% include 'post.html' %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -21,7 +21,7 @@
       <h1 class="fs-2">Forum WEB</h1>
       <div class="flex items-center space-x-4">
         {% if current_user.is_authenticated %}
-          <button type="button" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold py-2 px-4 rounded" data-bs-toggle="modal" data-bs-target="#newThreadModal">
+          <button id="btnModal" type="button" class="btn btn-light font-semibold py-2 px-4 rounded" data-bs-toggle="modal" data-bs-target="#newThreadModal">
             Abrir Modal
           </button>
           <a href="{{ url_for('perfil') }}" class="text-gray-300 hover:text-white">
@@ -42,10 +42,10 @@
     <!-- Modal -->
     <div class="modal fade" id="newThreadModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="newThreadModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <h5 class="modal-title">Nova Thread</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title text-white fs-3">Nova Thread</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
           </div>
           <form action="/Anime/newthread" id="newthread-form" method="POST" class="space-y-6" enctype="multipart/form-data">
             <div class="modal-body space-y-4">
@@ -63,7 +63,7 @@
 
             <div class="modal-footer space-x-4">
               <button type="button" class="bg-gray-500 hover:bg-gray-400 text-white py-2 px-4 rounded-lg" data-bs-dismiss="modal">Cancelar</button>
-              <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-lg">
+              <button type="submit" class="submitModal hover:bg-indigo-600 text-white py-2 px-4 rounded-lg">
                 Criar Thread
               </button>
             </div>

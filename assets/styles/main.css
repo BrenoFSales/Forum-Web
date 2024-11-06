@@ -18,7 +18,12 @@ header {
 }
 
 .perfil_icon {
-  font-size: 25px;
+  font-size: 50px;
+}
+
+#btnModal:hover{
+  background-color: #34495E;
+  color: #FDFEFE;
 }
 
 .logo_page {
@@ -51,4 +56,13 @@ footer {
 
 .feed {
   background-color: #FDFEFE;  
+}
+
+.modal-header{
+  background-color: #6e54b5;
+}
+
+.submitModal{
+  background-color: #6e54b5;
+  color: white;
 }

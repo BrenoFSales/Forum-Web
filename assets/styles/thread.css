@@ -16,9 +16,14 @@
     height: 30px;
     left: 50%;
     top: 100%;
-    transform: translateX(-55%);
+    transform: translateX(-57%);
 }
 
 .thread{
     position: relative;
+    border: 2px solid #6e54b5;
+}
+
+#thread-container {
+    height: 100%;
 }

@@ -1,4 +1,4 @@
-<div class="thread w-50 bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
+<div class="thread w-50 bg-white shadow-xl rounded-lg p-6 m-6">
   <div class="linha-conexao"><div class="fim-conexao"></div></div>
   <!-- Header Section with User and Title -->
   {% if post.attachment != '' %}
@@ -19,9 +19,12 @@
 
     <!-- Content Section -->
     <div>
-      <p class="text-gray-700 leading-relaxed">
+      <p class="text-gray-700 leading-relaxed mb-3">
         {{ post.content }}
       </p>
+    </div>
+    <div class="mt-2 d-flex justify-content-end">
+      <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newThreadModal"><i class="fa-solid fa-message"></i></button>
     </div>
 
   </div>

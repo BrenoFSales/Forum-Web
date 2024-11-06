@@ -1,8 +1,7 @@
-<div class="thread w-50 bg-white shadow-xl rounded-lg p-6 m-6">
+<div class="flex thread w-50 bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
   <div class="linha-conexao"><div class="fim-conexao"></div></div>
-  <!-- Header Section with User and Title -->
   {% if post.attachment != '' %}
-  <img src="{{ url_for('static', filename=post.attachment) }}">
+  <img src="{{ url_for('static', filename=post.attachment) }}" class="w-1/4 mr-5 shadow-xl">
   {% endif %}
   <div>
     <div class="mb-4 border-b pb-2 border-gray-200">
@@ -16,8 +15,6 @@
         {% endif %}
       </h3>
     </div>
-
-    <!-- Content Section -->
     <div>
       <p class="text-gray-700 leading-relaxed mb-3">
         {{ post.content }}

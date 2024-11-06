@@ -68,3 +68,20 @@ footer {
   background-color: #6e54b5;
   color: white;
 }
+
+.newThreadBtn {
+  background-color: #34495E;
+  color: white;
+  margin-top: 20px;
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  border-radius: 100px;
+  left: 90%;
+  top: 80%;
+}
+
+.newThreadBtn:hover {
+  background-color: #6e54b5;
+  color: #FDFEFE;
+}

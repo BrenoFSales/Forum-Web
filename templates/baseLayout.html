@@ -22,7 +22,7 @@
       <div class="flex items-center space-x-4">
         {% if current_user.is_authenticated %}
           <button id="btnModal" type="button" class="btn btn-light font-semibold py-2 px-4 rounded" data-bs-toggle="modal" data-bs-target="#newThreadModal">
-            Abrir Modal
+            Criar Thread
           </button>
           <a href="{{ url_for('perfil') }}" class="text-gray-300 hover:text-white">
             <i class="fa-regular fa-user perfil_icon text-xl"></i>
@@ -39,7 +39,12 @@
       <!-- O conteúdo das outras páginas será inserido aqui -->
       {% endblock %}
     </main>
-    <!-- Modal -->
+
+    <button class="newThreadBtn" data-bs-toggle="modal" data-bs-target="#newThreadModal">
+      <i class="fa-solid fa-plus fs-2"></i>
+    </button>
+
+    <!-- Modal Nova Thread -->
     <div class="modal fade" id="newThreadModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="newThreadModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -57,7 +62,7 @@
               </div>
               <div>
                 <label for="attachment" class="block text-sm font-medium text-gray-700">Anexar Arquivo</label>
-                <input name="attachment" type="file" id="attachment" class="w-full text-sm text-gray-700 py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2" required>
+                <input name="attachment" type="file" id="attachment" class="w-full text-sm text-gray-700 py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2">
               </div>
             </div>
 

@@ -16,10 +16,12 @@
       </h3>
     </div>
     <div>
-      <pre class="text-gray-700 leading-relaxed mb-3">{{ post.content }}</pre>
+      <p class="text-gray-700 leading-relaxed mb-3">{{ post.content }}</p>
     </div>
+    {% if current_user.is_authenticated%}
     <div class="mt-2 d-flex justify-content-end">
-      <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newThreadModal"><i class="fa-solid fa-message"></i></button>
+      <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
     </div>
+    {% endif %}
   </div>
 </div>

@@ -27,3 +27,8 @@
 #thread-container {
     height: 100%;
 }
+
+#btnModal {
+    background-color: #6e54b5;
+    color: white;
+}

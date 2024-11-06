@@ -1,9 +1,9 @@
-<div class="flex thread w-50 bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
+<div class="d-flex thread w-50 bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
   <div class="linha-conexao"><div class="fim-conexao"></div></div>
   {% if post.attachment != '' %}
   <img src="{{ url_for('static', filename=post.attachment) }}" class="w-1/4 mr-5 shadow-xl">
   {% endif %}
-  <div>
+  <div class="flex-fill">
     <div class="mb-4 border-b pb-2 border-gray-200">
       <h3 class="text-xl font-semibold text-indigo-800">
         {% if linkable %}
@@ -23,6 +23,5 @@
     <div class="mt-2 d-flex justify-content-end">
       <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newThreadModal"><i class="fa-solid fa-message"></i></button>
     </div>
-
   </div>
 </div>

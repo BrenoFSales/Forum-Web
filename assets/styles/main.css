@@ -55,6 +55,8 @@ footer {
 }
 
 .feed {
+  /* overflow-y: auto; */
+  height: 100vh;
   background-color: #FDFEFE;  
 }
 

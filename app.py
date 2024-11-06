@@ -222,7 +222,13 @@ def logout():
 @app.route('/perfil')
 @login_required
 def perfil():
-    return render_template('perfil.html')
+    result = (db.session
+        .query(Post)
+        .filter(Post.user_id == current_user.id)
+        .order_by(Post.id)
+        .limit(10)
+        .all())
+    return render_template('perfil.html',recent=[post_template(i, linkable=True) for i in result])
 
 @app.route('/thread/<id>')
 def thread(id):

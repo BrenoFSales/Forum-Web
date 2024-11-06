@@ -1,6 +1,6 @@
 <div class="d-flex thread w-50 bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
   <div class="linha-conexao"><div class="fim-conexao"></div></div>
-  {% if post.attachment != '' %}
+  {% if post.attachment != '' and post.attachment != None %}
   <img src="{{ url_for('static', filename=post.attachment) }}" class="w-1/4 mr-5 shadow-xl">
   {% endif %}
   <div class="flex-fill">
@@ -16,9 +16,7 @@
       </h3>
     </div>
     <div>
-      <p class="text-gray-700 leading-relaxed mb-3">
-        {{ post.content }}
-      </p>
+      <pre class="text-gray-700 leading-relaxed mb-3">{{ post.content }}</pre>
     </div>
     <div class="mt-2 d-flex justify-content-end">
       <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newThreadModal"><i class="fa-solid fa-message"></i></button>

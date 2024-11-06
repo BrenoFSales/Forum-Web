@@ -4,12 +4,46 @@
 {% block content %}
 <div id="thread-container" class="container p-5">
   <div id="super-thread" class="row justify-content-center">
-  {{ thread | safe }}
+  {{ thread_template | safe }}
   </div>
   <div id="sub-thread" class="m-auto w-75 row justify-content-center">
     {% for i in replies %}
       {{ i | safe}}
     {% endfor %}
+  </div>
+  <button id="btnModal" type="button" class="btn btn-light font-semibold py-2 px-4 rounded" data-bs-toggle="modal" data-bs-target="#newReplyModal">Nova Resposta</button>
+</div>
+<!-- todo: transformar em componente? -->
+<div class="modal fade" id="newReplyModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="newReplyModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-white fs-3">Nova Resposta</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <form id="newthread-form" method="POST" class="space-y-6" enctype="multipart/form-data" action="{{ url_for('thread', id=thread.id)}}" >
+        <div class="modal-body space-y-4">
+          <div>
+            <input name="title" type="text" placeholder="Titulo da Resposta" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <textarea name="content" placeholder="Conteudo..." required rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+          </div>
+          <div>
+            <label for="attachment" class="block text-sm font-medium text-gray-700">Anexar Arquivo</label>
+            <input name="attachment" type="file" id="attachment" class="w-full text-sm text-gray-700 py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2">
+          </div>
+        </div>
+
+        <div class="modal-footer space-x-4">
+          <button type="button" class="bg-gray-500 hover:bg-gray-400 text-white py-2 px-4 rounded-lg" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="submitModal hover:bg-indigo-600 text-white py-2 px-4 rounded-lg">
+            Criar Reposta
+          </button>
+        </div>
+      </form>
+
+    </div>
   </div>
 </div>
 {% endblock %}

@@ -59,8 +59,10 @@ class Post(db.Model):
     title: Mapped[str] = mapped_column(nullable=True)
     content: Mapped[str] = mapped_column(nullable=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    attachment: Mapped[str] = mapped_column(nullable=True)
+    attachment: Mapped[Optional[str]] = mapped_column(nullable=True)
+
     subforum_id: Mapped[int] = mapped_column(ForeignKey("subforum.id"), nullable=False)
+    subforum: Mapped["Subforum"] = relationship("Subforum", back_populates="posts")
 
     parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("post.id"), nullable=True)
     replies: Mapped[List["Post"]] = relationship("Post", back_populates="parent", cascade="all, delete-orphan")
@@ -88,7 +90,7 @@ class Subforum(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(unique=True)
     description: Mapped[str] = mapped_column(nullable=False)
-    posts: Mapped[List["Post"]] = relationship()
+    posts: Mapped[List["Post"]] = relationship("Post", back_populates="subforum")
 
     def __init__(self, name: str, description: str) -> None:
         super().__init__()
@@ -145,7 +147,7 @@ def index():
     result = (db.session
         .query(Post)
         .filter(Post.parent_id == None)
-        .order_by(Post.id)
+        .order_by(0 - Post.id) #lmao
         .limit(10)
         .all())
     return render_template("index.html", recent=[post_template(i, linkable=True) for i in result])
@@ -230,7 +232,7 @@ def perfil():
         .all())
     return render_template('perfil.html',recent=[post_template(i, linkable=True) for i in result])
 
-@app.route('/thread/<id>')
+@app.route('/thread/<id>', methods=['GET'])
 def thread(id):
     result = (db.session
         .query(Post)
@@ -240,17 +242,18 @@ def thread(id):
         .filter(Post.id == id)
         .first())
 
-    if result is None:
+    if result is None or result.parent_id != None:
         flask.abort(400, "thread não encontrada")
 
     return render_template(
         'thread.html',
-        thread=post_template(result),
+        thread=result,
+        thread_template=post_template(result),
         replies=[post_template(i) for i in result.replies]
     )
 
-@app.route('/<subforum>/newthread', methods=['POST'])
-def new_thread(subforum: str):
+
+def make_new_post_from_form(subforum: str, request: flask.Request, parent_id: int | None = None):
     user = flask_login.current_user
 
     subforum_ = db.session.query(Subforum).filter(Subforum.name == subforum).first()
@@ -270,10 +273,33 @@ def new_thread(subforum: str):
         saved = os.path.join('images', uploaded_file.filename)
         uploaded_file.save(os.path.join('assets', saved))
 
-    post = Post(user.id, title, content, subforum_id, saved)
+    # breakpoint()
+    post = Post(
+        user_id     = user.id,
+        title       = title,
+        content     = content,
+        subforum_id = subforum_id,
+        attachment  = saved,
+        parent_id   = parent_id
+    )
     db.session.add(post)
     db.session.commit()
+    return post
+
+@app.route('/<subforum>/newthread', methods=['POST'])
+def new_thread(subforum: str):
+    post = make_new_post_from_form(subforum, request)
     return flask.redirect(flask.url_for('thread', id=post.id))
+
+@app.route('/thread/<int:id>', methods=['POST'])
+def new_reply(id: int):
+    thread = db.session.query(Post).options(joinedload(Post.subforum)).filter(Post.id == id).first()
+    if thread is None or thread.id is None:
+        flask.abort(400, "Thread não pode ser encontrada")
+    if thread.subforum is None:
+        flask.abort(400, "Subforum de thread não pode ser encontrado")
+    post = make_new_post_from_form(thread.subforum.name, request, parent_id=thread.id)
+    return flask.redirect(flask.url_for('thread', id=thread.id))
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

@@ -19,9 +19,50 @@
       <p class="text-gray-700 leading-relaxed mb-3">{{ post.content }}</p>
     </div>
     {% if current_user.is_authenticated%}
-    <div class="mt-2 d-flex justify-content-end">
-      <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
+    <div class="d-flex d-flex justify-content-end">
+      {% if current_user.is_authenticated != post.user_id%}
+      <div class="btn btn-secondary w-25 d-flex justify-content-between" data-bs-toggle="modal" data-bs-target="#editModal">
+        <p>Editar</p>
+        <i class="fa-solid fa-pen-to-square"></i>
+      </div>
+      {% endif %}
+      <div class="mt-2 ms-3">
+        <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
+      </div>
+      {% endif %}
     </div>
-    {% endif %}
+  </div>
+</div>
+<!-- Editar a Thread -->
+<div class="modal fade" id="editModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-white fs-3">Editar a Thread</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+      </div>
+      <form id="newthread-form" method="POST" class="space-y-6" enctype="multipart/form-data" action="#" >
+        <div class="modal-body space-y-4">
+          <div>
+            <input name="title" type="text" placeholder="Novo Título da Thread" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+          </div>
+          <div>
+            <textarea name="content" placeholder="Novo Conteúdo..." required rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+          </div>
+          <div>
+            <label for="attachment" class="block text-sm font-medium text-gray-700">Anexar Arquivo</label>
+            <input name="attachment" type="file" id="attachment" class="w-full text-sm text-gray-700 py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2">
+          </div>
+        </div>
+
+        <div class="modal-footer space-x-4">
+          <button type="button" class="bg-gray-500 hover:bg-gray-400 text-white py-2 px-4 rounded-lg" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="submitModal hover:bg-indigo-600 text-white py-2 px-4 rounded-lg">
+            Salvar Edição
+          </button>
+        </div>
+      </form>
+
+    </div>
   </div>
 </div>

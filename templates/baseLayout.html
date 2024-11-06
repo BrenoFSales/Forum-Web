@@ -46,15 +46,30 @@
               <div class="modal-header">
                   <h5 class="modal-title">Nova Thread</h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
-              </div>
-              <div class="modal-body">
-                  Aqui ficará os inputs para criar novo Post/Thread!
-              </div>
-              <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                  <button type="button" class="btn btn-primary">Criar Thread</button>
-              </div>
           </div>
+          <form action="/Anime/newthread" id="newthread-form" method="POST" class="space-y-6" enctype="multipart/form-data">
+            <div class="modal-body space-y-4">
+              <div>
+                <input name="title" type="text" placeholder="Titulo da Thread" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+              </div>
+              <div>
+                <textarea name="content" placeholder="Conteudo..." required rows="6" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"></textarea>
+              </div>
+              <div>
+                <label for="attachment" class="block text-sm font-medium text-gray-700">Anexar Arquivo</label>
+                <input name="attachment" type="file" id="attachment" class="w-full text-sm text-gray-700 py-2 px-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 mt-2" required>
+              </div>
+            </div>
+
+            <div class="modal-footer space-x-4">
+              <button type="button" class="bg-gray-500 hover:bg-gray-400 text-white py-2 px-4 rounded-lg" data-bs-dismiss="modal">Cancelar</button>
+              <button type="submit" class="bg-indigo-600 hover:bg-indigo-500 text-white py-2 px-4 rounded-lg">
+                Criar Thread
+              </button>
+            </div>
+          </form>
+
+        </div>
       </div>
     </div>
     <!-- JS do Bootstrap -->

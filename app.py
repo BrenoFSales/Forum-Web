@@ -121,8 +121,12 @@ os generos e culturas (mangás não são livros. vire gente!)"),
 
         db.session.add_all([
             Post(1, "teste pai", "essa é a thread pai", 1, ""),
-            Post(1, "teste filho 1", "post filho 2",    1, "", 1),
-            Post(1, "teste filho 2", "post filho 3",    1, "", 1),
+            Post(2, "teste filho 1", "post filho 2",    1, "", 1),
+            Post(2, "teste filho 2", "post filho 3",    1, "", 1),
+
+            Post(2, "teste pai2", "essa é a thread pai", 1, ""),
+            Post(1, "teste filho 3", "post filho 2",    1, "", 4),
+            Post(1, "teste filho 4", "post filho 3",    1, "", 4),
         ])
         db.session.commit()
     except Exception as e:
@@ -250,21 +254,20 @@ def new_thread(subforum: str):
 
     title = request.form.get('title')
     content = request.form.get('content')
-    title = request.form.get('title')
-    uploaded_file = request.files.get('profile_picture')
+    uploaded_file = request.files.get('attachment')
 
     if title is None or content is None or title is None or uploaded_file is None:
-        flask.abort(400)
+        flask.abort(400, "Algum desses inexistente: 'content', 'title' ou 'uploaded_file'")
 
     saved = None
     if uploaded_file.filename != '' and uploaded_file.filename != None:
-        saved = os.path.join('static', uploaded_file.filename)
-        uploaded_file.save(saved)
+        saved = os.path.join('images', uploaded_file.filename)
+        uploaded_file.save(os.path.join('assets', saved))
 
     post = Post(user.id, title, content, subforum_id, saved)
     db.session.add(post)
     db.session.commit()
-    return flask.redirect(flask.url_for(f'/thread/{post.id}'))
+    return flask.redirect(flask.url_for('thread', id=post.id))
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0', port=5000)

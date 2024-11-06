@@ -1,22 +1,28 @@
 <div class="thread w-50 bg-white shadow-xl rounded-lg p-6 m-6 border border-gray-200">
   <div class="linha-conexao"><div class="fim-conexao"></div></div>
   <!-- Header Section with User and Title -->
-  <div class="mb-4 border-b pb-2 border-gray-200">
-    <h3 class="text-xl font-semibold text-indigo-800">
-      {% if linkable %}
+  {% if post.attachment != '' %}
+  <img src="{{ url_for('static', filename=post.attachment) }}">
+  {% endif %}
+  <div>
+    <div class="mb-4 border-b pb-2 border-gray-200">
+      <h3 class="text-xl font-semibold text-indigo-800">
+        {% if linkable %}
         <a href="{{ url_for('thread', id=post.id) }}">
           <span class="text-gray-800">{{ post.user.username }}</span> - {{ post.title }}
         </a>
-      {% else %}
+        {% else %}
         <span class="text-gray-800">{{ post.user.username }}</span> - {{ post.title }}
-      {% endif %}
-    </h3>
-  </div>
-  
-  <!-- Content Section -->
-  <div>
-    <p class="text-gray-700 leading-relaxed">
-      {{ post.content }}
-    </p>
+        {% endif %}
+      </h3>
+    </div>
+
+    <!-- Content Section -->
+    <div>
+      <p class="text-gray-700 leading-relaxed">
+        {{ post.content }}
+      </p>
+    </div>
+
   </div>
 </div>

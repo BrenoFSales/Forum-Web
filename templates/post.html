@@ -25,12 +25,15 @@
         <p>Editar</p>
         <i class="fa-solid fa-pen-to-square"></i>
       </div>
+      <form method="POST" action="{{ url_for('excluirThread', id=post.id) }}">
+        <button class="btn btn-danger" type="submit">Excluir<i class="fa-solid fa-trash-can"></i></button>
+      </form>
       {% endif %}
       <div class="mt-2 ms-3">
         <button class="row fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
       </div>
-      {% endif %}
     </div>
+      {% endif %}
   </div>
 </div>
 <!-- Editar a Thread -->
@@ -41,7 +44,7 @@
         <h5 class="modal-title text-white fs-3">Editar a Thread</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
       </div>
-      <form id="newthread-form" method="POST" class="space-y-6" enctype="multipart/form-data" action="#" >
+      <form id="newthread-form" method="POST" class="space-y-6" enctype="multipart/form-data" action="{{ url_for('editarThread', id=post.id) }}" >
         <div class="modal-body space-y-4">
           <div>
             <input name="title" type="text" placeholder="Novo Título da Thread" required class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">

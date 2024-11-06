@@ -291,6 +291,33 @@ def new_thread(subforum: str):
     post = make_new_post_from_form(subforum, request)
     return flask.redirect(flask.url_for('thread', id=post.id))
 
+@app.route('/editarThread/<id>', methods=['POST'])
+def editarThread(id):
+  if request.method == 'POST':
+    novo_conteudo = request.form.get('content')
+    novo_title = request.form.get('title')
+    result = (db.session
+        .query(Post)
+        .filter(Post.id == id)
+        .first())
+    result.content = novo_conteudo
+    result.title = novo_title
+    db.session.commit()
+    return flask.redirect(flask.url_for('thread', id=result.id))
+    
+@app.route('/excluirThread/<id>', methods=['POST'])
+def excluirThread(id):
+  if request.method == 'POST':
+    result = (db.session
+      .query(Post)
+      .filter(Post.id == id)
+      .first())
+    
+    db.session.delete(result)
+    db.session.commit()
+  
+  return flask.redirect(flask.url_for('perfil'))
+
 @app.route('/thread/<int:id>', methods=['POST'])
 def new_reply(id: int):
     thread = db.session.query(Post).options(joinedload(Post.subforum)).filter(Post.id == id).first()

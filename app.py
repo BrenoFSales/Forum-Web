@@ -144,13 +144,25 @@ def post_template(post: Post, linkable: bool = False):
 
 @app.route('/')
 def index():
+    return render_template("index.html")
+
+@app.route('/subforum/<name>')
+def subforum_index(name: str):
+    subforum = db.session.query(Subforum).filter_by(name=name).first()
+    if subforum is None:
+        flask.abort(400, 'Subforum nao pode ser encontrado')
     result = (db.session
         .query(Post)
         .filter(Post.parent_id == None)
+        .filter(Post.subforum_id == subforum.id)
         .order_by(0 - Post.id) #lmao
         .limit(10)
         .all())
-    return render_template("index.html", recent=[post_template(i, linkable=True) for i in result])
+    return render_template(
+        "subforum_index.html",
+        recent=[post_template(i, linkable=True) for i in result],
+        subforum=subforum
+    )
 
 @app.route('/signup', methods=['POST'])
 def register():
@@ -288,8 +300,8 @@ def make_new_post_from_form(subforum: str, request: flask.Request, parent_id: in
 
 @app.route('/<subforum>/newthread', methods=['POST'])
 def new_thread(subforum: str):
-    post = make_new_post_from_form(subforum, request)
-    return flask.redirect(flask.url_for('thread', id=post.id))
+    thread = make_new_post_from_form(subforum, request)
+    return flask.redirect(flask.url_for('thread', id=thread.id))
 
 @app.route('/editarThread/<id>', methods=['POST'])
 def editarThread(id):
@@ -325,7 +337,7 @@ def new_reply(id: int):
         flask.abort(400, "Thread não pode ser encontrada")
     if thread.subforum is None:
         flask.abort(400, "Subforum de thread não pode ser encontrado")
-    post = make_new_post_from_form(thread.subforum.name, request, parent_id=thread.id)
+    make_new_post_from_form(thread.subforum.name, request, parent_id=thread.id)
     return flask.redirect(flask.url_for('thread', id=thread.id))
 
 if __name__ == "__main__":

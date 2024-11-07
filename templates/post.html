@@ -20,7 +20,7 @@
     </div>
     {% if current_user.is_authenticated%}
     <div class="d-flex d-flex justify-content-end">
-      {% if current_user.is_authenticated != post.user_id%}
+      {% if current_user.is_authenticated == post.user_id%}
       <div class="btn btn-secondary w-25 d-flex justify-content-between" data-bs-toggle="modal" data-bs-target="#editModal">
         <p>Editar</p>
         <i class="fa-solid fa-pen-to-square"></i>

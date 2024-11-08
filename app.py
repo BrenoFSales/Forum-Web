@@ -140,7 +140,7 @@ def load_user(user_id: str):
 
 # preenche as informações do template de um post. também utilizado para renderizar um post pai.
 def post_template(post: Post, linkable: bool = False):
-    return render_template('post.html', post=post, linkable=linkable)
+    return render_template('post.html', post=post, post_html_id=f'post-{post.id}', linkable=linkable)
 
 @app.route('/')
 def index():
@@ -305,13 +305,18 @@ def new_thread(subforum: str):
 
 @app.route('/editarThread/<id>', methods=['POST'])
 def editarThread(id):
-  if request.method == 'POST':
     novo_conteudo = request.form.get('content')
     novo_title = request.form.get('title')
+    if novo_conteudo is None or novo_title is None:
+        flask.abort(400, "'content' ou 'title' em form não pode ser encontrado")
+
     result = (db.session
         .query(Post)
         .filter(Post.id == id)
         .first())
+    if result is None:
+        flask.abort(400, "Post não pode ser encontrado")
+
     result.content = novo_conteudo
     result.title = novo_title
     db.session.commit()
@@ -319,16 +324,16 @@ def editarThread(id):
     
 @app.route('/excluirThread/<id>', methods=['POST'])
 def excluirThread(id):
-  if request.method == 'POST':
     result = (db.session
       .query(Post)
       .filter(Post.id == id)
       .first())
-    
+
     db.session.delete(result)
     db.session.commit()
-  
-  return flask.redirect(flask.url_for('perfil'))
+
+    return ""
+    # return flask.redirect(flask.url_for('perfil'))
 
 @app.route('/thread/<int:id>', methods=['POST'])
 def new_reply(id: int):

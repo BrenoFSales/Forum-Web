@@ -1,4 +1,4 @@
-<div class="card mb-4" style="max-width: 600px;">
+<div id="{{ post_html_id }}" class="card mb-4" style="max-width: 600px;">
   <div class="row g-0">
     {% if post.attachment != '' and post.attachment != None %}
       <div class="col-md-4">
@@ -29,12 +29,16 @@
           <p>Editar</p>
           <i class="fa-solid fa-pen-to-square ms-2"></i>
         </div>
-        <form method="POST" action="{{ url_for('excluirThread', id=post.id) }}">
-          <button class="btn btn-danger" type="submit">Excluir<i class="fa-solid fa-trash-can ms-2"></i></button>
-        </form>
+        <!-- aciona a rota de excluirThread quando botao emitir o evento click. -->
+        <!-- troca o outerHTML do elemento que e especificado pelo seletor em hx-target. -->
+        <!-- como o servidor retorna uma string vazia, o elemento é deletado. -->
+        <!-- não queria escrever javascript. -->
+        <button hx-post="{{ url_for('excluirThread', id=post.id) }}" hx-trigger="click" hx-swap="outerHTML" hx-target="{{ '#' + post_html_id }}" class="btn btn-danger" type="submit">
+          Excluir<i class="fa-solid fa-trash-can"></i>
+        </button>
         <button class="fs-4 text-danger" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
         {% else %}
-          <button id="newReply" class="fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
+        <button id="newReply" class="fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
         {% endif %}
         </div>
     {% endif %} 

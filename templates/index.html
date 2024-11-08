@@ -1,6 +1,3 @@
-{% extends "baseLayout.html" %}
-
-{% block content %} 
 <section class="section d-flex align-items-center justify-content-center" id="section1">
   <div id="backgroundBox" class="border border-2 rounded">
     {% if current_user.is_authenticated %}
@@ -64,4 +61,3 @@
     });
   }
 </script>
-{% endblock %}

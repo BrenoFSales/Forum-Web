@@ -1,18 +1,16 @@
-from datetime import datetime
-from enum import unique
 import os
-from re import sub
+
 import flask
 from flask import Flask, render_template, url_for, request, redirect, flash
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import DateTime, ForeignKey
-from sqlalchemy.orm import DeclarativeBase, joinedload, relationship
-from sqlalchemy.orm import Mapped, mapped_column
-from typing import List
+from sqlalchemy.orm import joinedload
+
 import flask_login
-from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from typing import Optional
-from werkzeug.wrappers import response
+from flask_login import LoginManager, logout_user, login_required, current_user
+
+from models.config import db, User, Post, Subforum
+
+import views.components as component
+from views.components import header, base, profile, Component
 
 login_manager = LoginManager()
 app = Flask(__name__, static_folder='assets')
@@ -21,83 +19,9 @@ app.config["SECRET_KEY"] = "foobar"
 login_manager.init_app(app)
 
 
-class Teste(DeclarativeBase):
-    pass
-
-db = SQLAlchemy(model_class=Teste)
 db.init_app(app)
 
-# SQLAlchemy não faz migrações por padrão. qualquer alteração feita à essas classes não vai ser
-# refletida no banco imediatamente a não ser que delete ele
-
-class User(UserMixin, db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(unique=True)
-    email: Mapped[str]
-    password: Mapped[str] = mapped_column(nullable=False)
-    country_code: Mapped[str] = mapped_column(nullable=False) # ISO 3166-1 alpha-2
-    profile_picture: Mapped[str] = mapped_column(nullable=True) # url pra um recurso estático
-    posts: Mapped[List["Post"]] = relationship("Post", back_populates="user")
-
-    def __init__(self, username: str, email: str, password: str, country_code: str) -> None:
-        super().__init__()
-        self.username = username
-        self.email = email
-        self.password = password
-        self.country_code = country_code
-
-    @staticmethod
-    def get(user_id: str):
-        return db.session.query(User).filter_by(id=user_id).first()
-
-    def __repr__(self) -> str:
-        return f'User({self.username}, {self.email})'
-
-# threads e comentários em threads são ambos Post. na há necessidade de criar classes separadas para os dois.
-class Post(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    title: Mapped[str] = mapped_column(nullable=True)
-    content: Mapped[str] = mapped_column(nullable=True)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
-    attachment: Mapped[Optional[str]] = mapped_column(nullable=True)
-
-    subforum_id: Mapped[int] = mapped_column(ForeignKey("subforum.id"), nullable=False)
-    subforum: Mapped["Subforum"] = relationship("Subforum", back_populates="posts")
-
-    parent_id: Mapped[Optional[int]] = mapped_column(ForeignKey("post.id"), nullable=True)
-    replies: Mapped[List["Post"]] = relationship("Post", back_populates="parent", cascade="all, delete-orphan")
-    parent: Mapped[Optional["Post"]] = relationship("Post", back_populates="replies", remote_side=[id])
-
-    user_id: Mapped[int] = mapped_column(ForeignKey("user.id"), nullable=False)
-    user: Mapped["User"] = relationship("User", back_populates="posts")
-
-    def __init__(
-        self, user_id: int, title: str, content: str, subforum_id: int, attachment: Optional[str] = None, 
-            parent_id: Optional[int] = None) -> None:
-        super().__init__()
-        self.user_id = user_id
-        self.title = title
-        self.content = content
-        self.attachment = attachment
-        self.subforum_id = subforum_id
-        self.parent_id = parent_id
-
-    def __repr__(self) -> str:
-        return f'Post(user="{self.user.username}", id={self.id}, replies={len(self.replies)}, \
-title="{self.title}", content="{self.content})"'
-
-class Subforum(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True)
-    name: Mapped[str] = mapped_column(unique=True)
-    description: Mapped[str] = mapped_column(nullable=False)
-    posts: Mapped[List["Post"]] = relationship("Post", back_populates="subforum")
-
-    def __init__(self, name: str, description: str) -> None:
-        super().__init__()
-        self.name = name
-        self.description = description
-
-
+# dados para teste
 # do mesmo modo, alterações feitas nessas entidades não vão alterar o banco. delete o banco e reinicie o projeto.
 with app.app_context():
     db.create_all()
@@ -138,31 +62,23 @@ os generos e culturas (mangás não são livros. vire gente!)"),
 def load_user(user_id: str):
     return User.get(user_id)
 
-# preenche as informações do template de um post. também utilizado para renderizar um post pai.
-def post_template(post: Post, linkable: bool = False):
-    return render_template('post.html', post=post, post_html_id=f'post-{post.id}', linkable=linkable)
-
 @app.route('/')
 def index():
-    return render_template("index.html")
+    return base(Component(render_template("index.html")))
 
 @app.route('/subforum/<name>')
 def subforum_index(name: str):
     subforum = db.session.query(Subforum).filter_by(name=name).first()
     if subforum is None:
         flask.abort(400, 'Subforum nao pode ser encontrado')
-    result = (db.session
+    threads = (db.session
         .query(Post)
         .filter(Post.parent_id == None)
         .filter(Post.subforum_id == subforum.id)
         .order_by(0 - Post.id) #lmao
         .limit(10)
         .all())
-    return render_template(
-        "subforum_index.html",
-        recent=[post_template(i, linkable=True) for i in result],
-        subforum=subforum
-    )
+    return base(header(component.subforum_index(threads, subforum)))
 
 @app.route('/signup', methods=['POST'])
 def register():
@@ -197,7 +113,6 @@ def signin():
 
 
             if flask_login.login_user(result): # loga usuário caso true
-                print("Logged in:", result)
                 return flask.redirect(flask.url_for("index"))
             else:
                 flask.abort(400, "falha ao logar usuário")
@@ -236,13 +151,13 @@ def logout():
 @app.route('/perfil')
 @login_required
 def perfil():
-    result = (db.session
+    user_posts = (db.session
         .query(Post)
         .filter(Post.user_id == current_user.id)
         .order_by(Post.id)
         .limit(10)
         .all())
-    return render_template('perfil.html',recent=[post_template(i, linkable=True) for i in result])
+    return base(header(profile(user_posts)))
 
 @app.route('/thread/<id>', methods=['GET'])
 def thread(id):
@@ -257,12 +172,7 @@ def thread(id):
     if result is None or result.parent_id != None:
         flask.abort(400, "thread não encontrada")
 
-    return render_template(
-        'thread.html',
-        thread=result,
-        thread_template=post_template(result),
-        replies=[post_template(i) for i in result.replies]
-    )
+    return base(header(component.thread(result, result.replies)))
 
 
 def make_new_post_from_form(subforum: str, request: flask.Request, parent_id: int | None = None):

@@ -1,6 +1,3 @@
-{% extends "baseLayout.html" %}
-
-{% block content %}
 <header>
   <a href="{{ url_for('index') }}"><i class="fa-solid fa-earth-americas logo_page"></i></a>
   <h1 class="fs-2">4 Nerds</h1>
@@ -31,9 +28,7 @@
   </ul>
 </nav>
 <main>
-  {% block headerContent %}
-
-  {% endblock %}
+  {{ content | safe }}
 </main>
 <!-- Modal Nova Thread -->
 <button class="newThreadBtn" data-bs-toggle="modal" data-bs-target="#newThreadModal">
@@ -72,5 +67,3 @@
     </div>
   </div>
 </div>
-{% endblock %}
-

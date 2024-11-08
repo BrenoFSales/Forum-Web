@@ -1,11 +1,24 @@
 {% extends "baseLayout.html" %}
 
 {% block content %}
-
-<h1>[Nome do Forum aqui]</h1>
-<ul>
-  {% for i in ['Games', 'Anime', 'Tecnologia', 'Livros', 'Politica', 'Ciência', 'Hentai'] %}
-      <li><a href="{{ url_for('subforum_index', name=i)}}">{{ i }}</a></li>
-  {% endfor %}
-</ul>
+<div id="index" class="d-flex align-items-center justify-content-center">
+  <div id="backgroundBox" class="border border-2 rounded">
+    {% if current_user.is_authenticated %}
+    <div id="btnLogin" class="d-flex flex-col align-items-end">
+      <h1 class="fs-2 row">Olá, {{ current_user.username }}!</h1>
+      <a href="{{ url_for('logout') }}" class="fs-5 fst-italic text-decoration-underline">Sair</a>
+    </div>
+    {% else %}
+    <a href="{{ url_for('signin') }}" id="btnLogin" class="bg-white text-gray-800 font-semibold py-2 px-4 rounded">
+      <i class="fa-solid fa-user"></i> Entrar
+    </a>
+    {% endif %}
+    <h1 class="mb-5 text-center">4 Nerds</h1>
+    <ul class="d-flex rounded p-1">
+      {% for i in ['Games', 'Anime', 'Tecnologia', 'Livros', 'Politica', 'Ciência'] %}
+          <li class="m-2 p-2 rounded fs-6"><a href="{{ url_for('subforum_index', name=i)}}">{{ i }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
 {% endblock %}

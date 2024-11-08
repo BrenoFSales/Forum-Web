@@ -1,7 +1,7 @@
 {% extends "baseLayout.html" %}
 
-{% block content %}
-<div id="index" class="d-flex align-items-center justify-content-center">
+{% block content %} 
+<section class="section d-flex align-items-center justify-content-center" id="section1">
   <div id="backgroundBox" class="border border-2 rounded">
     {% if current_user.is_authenticated %}
     <div id="btnLogin" class="d-flex flex-col align-items-end">
@@ -20,5 +20,48 @@
       {% endfor %}
     </ul>
   </div>
-</div>
+</section>
+
+<section class="section newSection" id="section2">
+  <h1 class="fs-2">New Section 2</h1>
+</section>
+
+<section class="section newSection" id="section3">
+  <h1 class="fs-2">New Section 3</h1>
+</section>
+
+<script>
+  const sections = document.querySelectorAll('.section');
+  let currentSection = 0;
+  let isScrolling = false; // Controla se o scroll está em andamento
+
+  window.addEventListener('wheel', (event) => {
+    if (isScrolling) return; // Ignora o scroll enquanto a transição está em andamento
+
+    if (event.deltaY > 0) {
+      // Scroll para baixo
+      if (currentSection < sections.length - 1) {
+        currentSection++;
+        changeSection();
+      }
+    } else {
+      // Scroll para cima
+      if (currentSection > 0) {
+        currentSection--;
+        changeSection();
+      }
+    }
+
+    isScrolling = true; // Marca que uma transição está em andamento
+    setTimeout(() => {
+      isScrolling = false; // Permite o próximo scroll após um pequeno atraso
+    }, 500); // Ajuste o tempo conforme necessário (em milissegundos)
+  });
+
+  function changeSection() {
+    sections.forEach((section, index) => {
+      section.style.transform = `translateY(-${currentSection * 100}vh)`;
+    });
+  }
+</script>
 {% endblock %}

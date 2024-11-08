@@ -1,10 +1,12 @@
-html {
-  height: 100vh;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body {
-  margin: 0px;
-  padding: 0px;
+body, html {
+  overflow: hidden;
+  height: 100vh;
 }
 
 header {
@@ -28,45 +30,65 @@ nav li {
 }
 
 /*-------------------------- Index --------------------------*/
+.section {
+  width: 100%;
+  height: 100vh;
+  transition: transform 0.7s ease-in-out;
+}
 
-#index {
+#section1 {
   background-color: black;
   height: 100vh;
   color: #FDFEFE; 
 }
 
-#index h1 {
-  font-size: 3.5em;
+#section1 h1 {
+  font-size: 5.5em;
 }
 
-#index ul {
+#section1 ul {
   background-color: #2d3e50;
 }
 
-#index li {
+#section1 li {
   background-color: #6756ff;
   transition: box-shadow 0.3s;
 }
 
-#index li:hover {
+#section1 li:hover {
   box-shadow: #6756ff 0 2px 50px -2px;
 }
 
 #backgroundBox {
   position: relative;
-  padding: 23%;
   background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url("../images/bg-index.png");
   background-size: cover;
   height: 80%;
+  padding: 22%;
+  background-position: center;
 }
 
 #btnLogin {
   position: absolute;
   top: 20px;
-  right: 20px; 
+  right: 40px; 
 }
 
-/*-------------------------- Index --------------------------*/
+#section2 {
+  background-color: #2196F3;
+}
+
+#section3 {
+  background-color: #FF5722;
+}
+
+.newSection {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/*----------------------------------------------------*/
 
 .perfil_icon {
   font-size: 50px;

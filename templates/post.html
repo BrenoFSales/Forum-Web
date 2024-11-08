@@ -32,9 +32,11 @@
         <form method="POST" action="{{ url_for('excluirThread', id=post.id) }}">
           <button class="btn btn-danger" type="submit">Excluir<i class="fa-solid fa-trash-can ms-2"></i></button>
         </form>
+        <button class="fs-4 text-danger" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
+        {% else %}
+          <button id="newReply" class="fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
         {% endif %}
-          <button class="fs-4" type="button" data-bs-toggle="modal" data-bs-target="#newReplyModal"><i class="fa-solid fa-message"></i></button>
-      </div>
+        </div>
     {% endif %} 
   </div>
   <div id="linha-conexao"><div id="fim-conexao"></div></div>

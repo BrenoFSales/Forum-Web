@@ -6,14 +6,14 @@
   <div id="super-thread" class="row justify-content-center">
   {{ thread_template | safe }}
   </div>
-  <div id="sub-thread" class="m-auto w-75 row justify-content-center">
+  <div id="sub-thread" class="m-auto w-50 row justify-content-center">
     {% for i in replies %}
       {{ i | safe}}
     {% endfor %}
   </div>
   <button id="btnModal" type="button" class="btn font-semibold py-2 px-4 rounded" data-bs-toggle="modal" data-bs-target="#newReplyModal">Nova Resposta</button>
 </div>
-<!-- todo: transformar em componente? -->
+
 <div class="modal fade" id="newReplyModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="newReplyModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">

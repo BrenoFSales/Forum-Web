@@ -325,9 +325,10 @@ def editarThread(id):
 @app.route('/excluirThread/<id>', methods=['POST'])
 def excluirThread(id):
     result = (db.session
-      .query(Post)
-      .filter(Post.id == id)
-      .first())
+        .query(Post)
+        .options(joinedload(Post.replies))
+        .filter(Post.id == id)
+        .first())
 
     db.session.delete(result)
     db.session.commit()

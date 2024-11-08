@@ -11,7 +11,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from typing import List
 import flask_login
 from flask_login import LoginManager, UserMixin, login_user, logout_user, login_required, current_user
-from sqlalchemy.orm.scoping import Optional
+from typing import Optional
 from werkzeug.wrappers import response
 
 login_manager = LoginManager()
@@ -326,15 +326,15 @@ def editarThread(id):
 def excluirThread(id):
     result = (db.session
         .query(Post)
-        .options(joinedload(Post.replies))
         .filter(Post.id == id)
         .first())
 
+    if result is None:
+        flask.abort(400, "Post não pode ser encontrado")
+
     db.session.delete(result)
     db.session.commit()
-
     return ""
-    # return flask.redirect(flask.url_for('perfil'))
 
 @app.route('/thread/<int:id>', methods=['POST'])
 def new_reply(id: int):

@@ -1,5 +1,6 @@
 .venv/*
 venv/*
 assets/*
+instance/*
 */__pycache__/*
 __pycache__/*

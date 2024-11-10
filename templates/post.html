@@ -10,21 +10,25 @@
     {% else %}
     <div class="col-md-12">
     {% endif%}
-      <div class="card-body">
-        {% if linkable %}
-          <a href="{{ url_for('thread', id=post.id) }}">
+    <div class="card-header">
+      {% if linkable %}
+      <a href="{{ url_for('thread', id=post.id) }}">
         {% endif %}
-            <h1 class="text-gray-800 fs-5"><span class="text-violet-800">{{ post.user.username }} - </span>{{ post.title }}</h1>
+        <h1 class="text-gray-800 fs-5"><span class="text-violet-800 class">{{ post.user.username }} - </span>{{ post.title }}</h1>
         {% if linkable %}
-          </a>
-        {% endif %}
-        <p class="card-text">{{ post.content }}</p>
+      </a>
+      {% endif %}
+    </div>
+    <div class="card-body">
+    <p class="card-text">{{ post.content }}</p>
       </div>
     </div>
   </div>
   <div class="card-footer w-100 d-flex">
       <div class="d-flex justify-content-between flex-fill">
-        <p class="card-text col-6"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+        <div class="p-auto">
+          <small class="text-body-secondary">Last updated 3 mins ago</small>
+        </div>
         {% if current_user.is_authenticated%}
         <!-- controles: editar e excluir -->
         <div class="flex">

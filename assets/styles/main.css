@@ -38,8 +38,8 @@ nav li {
   color: #FDFEFE;
 }
 
-.logo_page {
-  font-size: 3em;
+.logoPage {
+  height: 50px;
 }
 
 
@@ -71,7 +71,7 @@ main {
 }
 
 .newThreadBtn {
-  background-color: #34495E;
+  background-color: #6e54b5;
   color: white;
   margin-top: 20px;
   position: absolute;
@@ -83,6 +83,6 @@ main {
 }
 
 .newThreadBtn:hover {
-  background-color: #6e54b5;
+  background-color: #34495E;
   color: #FDFEFE;
 }

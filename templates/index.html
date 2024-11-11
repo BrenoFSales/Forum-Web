@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fórum Dazora</title>
+    <title>Cube</title>
     <link rel="stylesheet" href="../assets/styles/index.css">
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -25,7 +25,10 @@
           <i class="fa-solid fa-user"></i> Entrar
         </a>
         {% endif %}
-        <h1 class="mb-5 text-center">4 Nerds</h1>
+        <div class="d-flex row justify-content-center">
+          <img class="logoPage col-3" src="../assets/images/logo-cube.png" alt="logo">
+          <h1 class="mb-5 text-center col-5">Cube</h1>
+        </div>
         <ul class="d-flex rounded p-1">
           {% for i in ['Games', 'Anime', 'Tecnologia', 'Livros', 'Politica', 'Ciência'] %}
               <li class="m-2 p-2 rounded fs-6"><a href="{{ url_for('subforum_index', name=i)}}">{{ i }}</a></li>
@@ -34,12 +37,26 @@
       </div>
     </section>
 
-    <section class="section newSection" id="section2">
-      <h1 class="fs-2">New Section 2</h1>
+    <section class="section newSection d-flex align-items-center justify-content-center" id="section2">
+      <div id="backgroundBox-2" class="border border-secondary border-2 rounded">
+        <h1 class="fs-2"><h2>O que é o Nosso Fórum?</h2>
+        <p>Neste ambiente, você pode compartilhar ideias, debater temas variados e interagir com pessoas que possuem interesses semelhantes. 
+        Nosso fórum é organizado por categorias, facilitando a busca por assuntos específicos, e proporcionando uma experiência de troca de conhecimento para todos.</p>
+        <p>Seja qual for o seu interesse - tecnologia, anime, política, games ou entretenimento - aqui você encontrará um ambiente aberto para aprender, ensinar e crescer.</p></h1>
+      </div>
     </section>
 
-    <section class="section newSection" id="section3">
-      <h1 class="fs-2">New Section 3</h1>
+    <section class="section newSection d-flex align-items-center justify-content-center" id="section3">
+      <div id="backgroundBox-3" class="border border-2 rounded">
+        <h1 class="fs-2"><h2>Diretrizes da Comunidade</h2>
+        <p>Para manter o ambiente saudável e acolhedor para todos, pedimos que todos os participantes sigam as diretrizes da comunidade:</p>
+        <ul>
+            <li><strong>Respeito mútuo:</strong> Trate todos com respeito e evite conflitos desnecessários.</li>
+            <li><strong>Seja positivo e construtivo:</strong> Nosso objetivo é ajudar, ensinar e apoiar uns aos outros.</li>
+            <li><strong>Não compartilhe informações pessoais:</strong> Preservar a privacidade de todos é essencial para uma comunidade segura.</li>
+        </ul>
+        <p>Acreditamos que, ao seguir essas diretrizes, todos podem aproveitar ao máximo a experiência em nosso fórum.</p></h1>
+      </div>
     </section>
 
     <script>

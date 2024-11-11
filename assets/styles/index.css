@@ -9,6 +9,10 @@ overflow: hidden;
 height: 100vh;
 }
 
+.logoPage {
+    height: 100px;
+}
+
 /*-------------------------- Index --------------------------*/
 .section {
     width: 100%;
@@ -54,6 +58,27 @@ ul a {
     background-position: center;
 }
 
+#backgroundBox-2 {
+    position: relative;
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url("../images/bg-index.png"); */
+    background-size: cover;
+    height: 80%;
+    width: 80%;
+    padding: 15%;
+    background-position: center;
+}
+
+#backgroundBox-3 {
+    position: relative;
+    /* background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url("../images/bg-index.png"); */
+    background-size: cover;
+    height: 80%;
+    width: 80%;
+    padding: 10%;
+    background-position: center;
+    color: #eaecee;
+}
+
 #btnLogin {
     position: absolute;
     top: 20px;
@@ -66,17 +91,15 @@ ul a {
 }
 
 #section2 {
-    background-color: #2196F3;
+    background-color: #eaecee;
 }
 
 #section3 {
-    background-color: #FF5722;
+    background-color:#6756ff;
 }
 
 .newSection {
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 /*----------------------------------------------------*/

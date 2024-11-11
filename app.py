@@ -64,7 +64,7 @@ def load_user(user_id: str):
 
 @app.route('/')
 def index():
-    return base(Component(render_template("index.html")))
+    return render_template("index.html")
 
 @app.route('/subforum/<name>')
 def subforum_index(name: str):

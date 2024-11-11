@@ -1,4 +1,4 @@
-<div hx-target="this" id="{{ post_html_id }}" class="card mb-4 px-0" style="max-width: 600px;">
+<div hx-target="this" id="{{ post_html_id }}" id="postThread" class="card mb-4 px-0" style="max-width: 600px;">
   <div class="row g-0">
     {% if post.attachment != '' and post.attachment != None %}
       <div class="col-md-4">
@@ -20,8 +20,8 @@
       {% endif %}
     </div>
     <div class="card-body">
-    <p class="card-text">{{ post.content }}</p>
-      </div>
+      <p class="card-text">{{ post.content }}</p>
+    </div>
     </div>
   </div>
   <div class="card-footer w-100 d-flex">

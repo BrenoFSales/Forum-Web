@@ -29,67 +29,6 @@ nav li {
   margin-left: 30px;
 }
 
-/*-------------------------- Index --------------------------*/
-.section {
-  width: 100%;
-  height: 100vh;
-  transition: transform 0.7s ease-in-out;
-}
-
-#section1 {
-  background-color: black;
-  height: 100vh;
-  color: #FDFEFE; 
-}
-
-#section1 h1 {
-  font-size: 5.5em;
-}
-
-#section1 ul {
-  background-color: #2d3e50;
-}
-
-#section1 li {
-  background-color: #6756ff;
-  transition: box-shadow 0.3s;
-}
-
-#section1 li:hover {
-  box-shadow: #6756ff 0 2px 50px -2px;
-}
-
-#backgroundBox {
-  position: relative;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), url("../images/bg-index.png");
-  background-size: cover;
-  height: 80%;
-  padding: 22%;
-  background-position: center;
-}
-
-#btnLogin {
-  position: absolute;
-  top: 20px;
-  right: 40px; 
-}
-
-#section2 {
-  background-color: #2196F3;
-}
-
-#section3 {
-  background-color: #FF5722;
-}
-
-.newSection {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/*----------------------------------------------------*/
-
 .perfil_icon {
   font-size: 50px;
 }
@@ -105,9 +44,11 @@ nav li {
 
 
 main {
-  height: 100vh;
+  height: 100%;
   width: 100%;
   overflow-y: auto;
+  background-color: #000000e6;
+
 }
 
 .sideBar {
@@ -118,11 +59,6 @@ main {
 
 .sideBar li {
   margin-top: 10px;
-}
-
-.feed {
-  height: 100vh;
-  background-color: #FDFEFE;  
 }
 
 .modal-header{

@@ -147,17 +147,48 @@ def logout():
     logout_user()
     return redirect(url_for('index'))
 
-
-@app.route('/perfil')
-@login_required
-def perfil():
-    user_posts = (db.session
+def get_user_posts(id: int):
+    return (db.session
         .query(Post)
         .filter(Post.user_id == current_user.id)
         .order_by(Post.id)
         .limit(10)
         .all())
+
+@app.route('/perfil')
+@login_required
+def perfil():
+    user_posts = get_user_posts(current_user.id)
     return base(header(profile(user_posts)))
+
+@app.route('/perfil/edit/<int:id>', methods=['GET', 'DELETE', 'POST'])
+@login_required
+def edit_user_info(id: int):
+    user_posts = get_user_posts(id)
+    if request.method == 'DELETE':
+        return profile(user_posts, editing=False)
+    if request.method == 'POST':
+        username = request.form.get('username')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        confirm_password = request.form.get('confirm-password')
+
+        # todo: verificar se email já existe
+        # todo: verificar senha e confirmar senha
+        if username is None or email is None or password is None:
+            flask.abort(400)
+
+        user = db.session.query(User).filter(User.id == current_user.id).first()
+        if user is None:
+            flask.abort(400)
+
+        user.username = username
+        user.email = email
+        user.password = password
+        db.session.commit()
+
+        return profile(user_posts, editing=False)
+    return profile(user_posts, editing=True)
 
 @app.route('/thread/<id>', methods=['GET'])
 def thread(id):

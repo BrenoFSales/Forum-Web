@@ -1,28 +1,72 @@
-<div class="container mt-5 w-75">
-    <h1 class="mb-4 fs-5 text-light">Perfil do Usuário</h1>
-    <a href="{{ url_for('logout') }}"><button class="btn btn-danger mb-4">Encerrar Sessão</button></a>
-    <!-- Seção de Informações Pessoais -->
-    <div class="card mb-4">
-        <div class="card-header">
-            Informações Pessoais
-        </div>
-        <div class="card-body">
-            <p><strong>Nome Completo:</strong> {{ current_user.username }}</p>
-            <p><strong>Email:</strong> {{ current_user.email }}</p>
-            <p><strong>Telefone:</strong> (11) 98765-4321</p>
-        </div>
-    </div>
+<div hx-target="this" hx-swap="outerHTML" class="container mt-5 w-75">
+  {% if editing %}
+  <form hx-post="{{url_for('edit_user_info', id=current_user.id)}}">
+  {% endif %}
 
-    <!-- Seção de Endereço -->
-    <div class="card mb-4">
-        <div class="card-header">
-            Minhas Threads
-        </div>
-        <div class="card-body d-flex row justify-content-center pb-5" style="max-width: 600px; margin: auto;">
-            {% for i in recent %}   
-                {{ i | safe}}
-            {% endfor %}
-        </div>
-        <br>
+  <h1 class="mb-4 fs-5">Perfil do Usuário</h1>
+  <a class="btn btn-danger mb-4 {% if editing %} disabled {% endif %}" href="{{ url_for('logout') }}">
+    Encerrar Sessão
+  </a>
+  <a class="btn btn-secondary mb-4 {% if editing %} disabled {% endif %}"
+    hx-trigger="click"
+    hx-get="{{ url_for('edit_user_info', id=current_user.id)}}"
+  >
+    Alterar informações
+  </a>
+
+  <!-- Seção de Informações Pessoais -->
+  <div class="card mb-4">
+    <div class="card-header">
+      Informações Pessoais
     </div>
+    <div class="card-body">
+      <div>
+        <label for="" ><strong>Nome de usuário:</strong></label>
+        <input class="p-1" type="text" name="username" value="{{ current_user.username }}" {% if not editing %} disabled {% else %} autofocus {% endif %}>
+      </div>
+      <div>
+        <label for="" ><strong>Email:</strong></label>
+        <input class="p-1" type="text" name="email" value="{{ current_user.email }}" {% if not editing %} disabled {% endif %}>
+      </div>
+      <div>
+        <label for="" ><strong>Telefone:</strong></label>
+        <input class="p-1" type="text" name="tel" value="(11) 98765-4321" {% if not editing %} disabled {% endif %}>
+      </div>
+      {% if editing %} 
+      <div>
+        <label for="" ><strong>Nova Senha:</strong></label>
+        <input class="p-1" type="password" name="password" value="{% if not editing %} foobarfoobar {% endif %}" {% if not editing %} disabled {% endif %}>
+      </div>
+      <div>
+        <label for="" ><strong>Confirmar senha:</strong></label>
+        <input class="p-1" type="password" name="confirm-password" value="">
+      </div>
+      {% endif %}
+    </div>
+    {% if editing %}
+    <button type="submit" class="btn btn-success mb-2" >
+      Salvar
+    </button>
+    <button class="btn btn-secondary mb-2"
+      hx-delete="{{url_for('edit_user_info', id=current_user.id)}}"
+    >
+      Cancelar</button>
+      {% endif %}
+  </div>
+
+  <!-- Seção de Endereço -->
+  <div class="card mb-4">
+    <div class="card-header">
+      Minhas Threads
+    </div>
+    <div class="card-body d-flex row justify-content-center pb-5" style="max-width: 600px; margin: auto;">
+      {% for i in recent %}   
+      {{ i | safe}}
+      {% endfor %}
+    </div>
+    <br>
+  </div>
+  {% if editing %}
+  </form >
+  {% endif %}
 </div>

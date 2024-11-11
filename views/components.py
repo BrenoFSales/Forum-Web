@@ -27,9 +27,10 @@ def subforum_index(threads: List[app.Post], subforum: app.Subforum):
         subforum=subforum
     ))
 
-def profile(user_posts: List[app.Post]):
+def profile(user_posts: List[app.Post], editing=False):
     return Component(render_template(
         'perfil.html',
+        editing=editing,
         recent=[post(i, linkable=True) for i in user_posts]
     ))
 

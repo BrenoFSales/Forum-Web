@@ -230,7 +230,11 @@ def editarThread(id):
     result.content = novo_conteudo
     result.title = novo_title
     db.session.commit()
-    return flask.redirect(flask.url_for('thread', id=result.id))
+
+    if result.parent_id is None:
+        return flask.redirect(flask.url_for('thread', id=result.id))
+    
+    return flask.redirect(flask.url_for('thread', id=result.parent_id))
     
 @app.route('/excluirThread/<id>', methods=['POST'])
 def excluirThread(id):

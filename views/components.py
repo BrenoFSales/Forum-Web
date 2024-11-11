@@ -10,6 +10,7 @@ def post(post: app.Post, linkable: bool = False):
         'post.html',
         post=post,
         post_html_id=f'post-{post.id}',
+        post_modal_id=f'post-modal-{post.id}',
         linkable=linkable
     ))
 

@@ -18,13 +18,13 @@
 </header>
 <nav class="d-flex justify-content-between">
   <ul class="row w-100 m-auto">
-    <li class="fs-6 col"><i class="fa-solid fa-gamepad me-2"></i>Games</li>
-    <li class="fs-6 col"><i class="fa-solid fa-film me-2"></i>Anime</li>
-    <li class="fs-6 col"><i class="fa-solid fa-microchip me-2"></i>Tecnologia</li>
-    <li class="fs-6 col"><i class="fa-solid fa-book me-2"></i>Livros</li>
-    <li class="fs-6 col"><i class="fa-solid fa-landmark me-2"></i>Política</li>
-    <li class="fs-6 col"><i class="fa-solid fa-flask me-2"></i>Ciencia</li>
-    <li class="fs-6 col"><i class="fa-solid fa-ban me-2"></i>Hentai</li>
+    <li class="fs-6 col"><a href="{{ url_for('subforum_index', name='Games')}}"><i class="fa-solid fa-gamepad me-2"></i>Games</a></li>
+    <li class="fs-6 col"><a href="{{ url_for('subforum_index', name='Anime')}}"><i class="fa-solid fa-film me-2"></i>Anime</a></li>
+    <li class="fs-6 col"><a href="{{ url_for('subforum_index', name='Tecnologia')}}"><i class="fa-solid fa-microchip me-2"></i>Tecnologia</a></li>
+    <li class="fs-6 col"><a href="{{ url_for('subforum_index', name='Livros')}}"><i class="fa-solid fa-book me-2"></i>Livros</a></li>
+    <li class="fs-6 col"><a href="{{ url_for('subforum_index', name='Politica')}}"><i class="fa-solid fa-landmark me-2"></i>Política</a></li>
+    <li class="fs-6 col"><a href="{{ url_for('subforum_index', name='Ciência')}}"><i class="fa-solid fa-flask me-2"></i>Ciencia</a></li>
+    <li class="fs-6 col"><a href="{{ url_for('subforum_index', name='Hentai')}}"><i class="fa-solid fa-ban me-2"></i>Hentai</a></li>
   </ul>
 </nav>
 <div>

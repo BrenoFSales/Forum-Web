@@ -19,11 +19,6 @@
     transform: translateX(-57%);
 }
 
-.thread{
-    position: relative;
-    border: 2px solid #6e54b5;
-}
-
 #thread-container {
     height: 100%;
     width: 100%;
@@ -37,7 +32,3 @@
 #newReply {
     margin-left: 92%;
 }
-
-/* #postThread {
-    margin-bottom: 50px;
-} */

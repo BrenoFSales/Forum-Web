@@ -1,42 +1,38 @@
-<div hx-target="this" id="{{ post_html_id }}" id="postThread" class="card mb-4 px-0" style="max-width: 600px;">
+<div hx-target="this" id="{{ post_html_id }}" class="d-flex card cardCustom mb-4 px-0 rounded-2" style="max-width: 600px;">
   <div class="row g-0">
     {% if post.attachment != '' and post.attachment != None %}
-      <div class="col-md-4">
-        <a href="{{ url_for('static', filename=post.attachment) }}" target="_blank">
-          <img src="{{ url_for('static', filename=post.attachment) }}" class="img-fluid rounded-start">
-        </a>
-      </div>
-    <div class="col-md-8">
-    {% else %}
-    <div class="col-md-12">
-    {% endif%}
-    <div class="card-header">
-      {% if linkable %}
-      <a href="{{ url_for('thread', id=post.id) }}">
-        {% endif %}
-        <h1 class="text-gray-800 fs-5"><span class="text-violet-800 class">{{ post.user.username }} - </span>{{ post.title }}</h1>
-        {% if linkable %}
+    <div class="col-md-4">
+      <a href="{{ url_for('static', filename=post.attachment) }}" target="_blank">
+        <img src="{{ url_for('static', filename=post.attachment) }}" class="img-fluid rounded-start">
       </a>
-      {% endif %}
     </div>
-    <div class="card-body">
-      <p class="card-text">{{ post.content }}</p>
+    {% endif %}
+    <div class="col">
+      <div class="card-header rounded-top-2">
+        {% if linkable %}
+        <a href="{{ url_for('thread', id=post.id) }}">
+          {% endif %}
+          <h1 class="text-black fs-5"><span class="text-white class">{{ post.user.username }} - </span>{{ post.title }}</h1>
+          {% if linkable %}
+        </a>
+        {% endif %}
+      </div>
+      <div class="card-body">
+        <p class="card-text">{{ post.content }}</p>
+      </div>
     </div>
-    </div>
-  </div>
-  <div class="card-footer w-100 d-flex">
+    <div class="card-footer w-100 d-flex rounded-bottom-2">
       <div class="d-flex justify-content-between flex-fill">
         <div class="p-auto">
           <small class="text-body-secondary">Last updated 3 mins ago</small>
         </div>
-        {% if current_user.is_authenticated%}
         <!-- controles: editar e excluir -->
+        {% if current_user.is_authenticated and current_user == post.user%}
         <div class="flex">
-          {% if current_user == post.user%}
           <button 
-            class="btn btn-secondary d-flex align-items-center"
+            class="btn btn-secondary d-flex align-items-center me-1"
             style="background-color: #00000000; color: initial;"
-            data-bs-toggle="modal" data-bs-target="#editModal">
+            data-bs-toggle="modal" data-bs-target="#{{ post_modal_id }}">
             <i class="fa-solid fa-pen-to-square"></i> 
           </button>
           <!-- aciona a rota de excluirThread quando botao emitir o evento click. -->
@@ -49,16 +45,16 @@
             class="btn btn-danger" type="submit" style="background-color: #00000000; color: initial;">
             <i class="fa-solid fa-trash-can" style="color: red;"></i>
           </button>
-          {% endif %}
         </div>
-      </div>
-    {% endif %} 
+        {% endif %}
+      </div> 
+    </div>
+    <div id="linha-conexao"><div id="fim-conexao"></div></div>
   </div>
-  <div id="linha-conexao"><div id="fim-conexao"></div></div>
 </div>
 
 <!-- Editar a Thread -->
-<div class="modal fade" id="editModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+<div class="modal fade" id="{{ post_modal_id }}" data-bs-backdrop="static" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
@@ -90,3 +86,19 @@
     </div>
   </div>
 </div>
+
+<style>
+/* Card Post Style */
+.cardCustom {
+    background-color: #f3f6f4;
+    border-color: #6e54b5;
+}
+
+.cardCustom .card-header {
+    background-color:#6e54b5;
+}
+
+.cardCustom .card-footer {
+    background-color: #eaecee;
+}
+</style>

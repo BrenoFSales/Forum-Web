@@ -184,7 +184,8 @@ def edit_user_info(id: int):
 
         user.username = username
         user.email = email
-        user.password = password
+        if password != '':
+            user.password = password
         db.session.commit()
 
         return profile(user_posts, editing=False)

@@ -74,7 +74,7 @@ ul a {
     background-size: cover;
     height: 80%;
     width: 80%;
-    padding: 10%;
+    padding: 9%;
     background-position: center;
     color: #eaecee;
 }
@@ -103,4 +103,18 @@ ul a {
 }
 
 /*----------------------------------------------------*/
+
+.section2Image {
+    position: absolute;
+    left: 75%;
+    top: -12%;
+    height: 400px;
+}
+
+.section3Image {
+    position: absolute;
+    left: -12%;
+    top: 60%;
+    height: 400px;
+}
   

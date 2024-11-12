@@ -33,6 +33,13 @@ nav li {
   font-size: 50px;
 }
 
+#cardCustomPerfil {
+  border: 5px solid #34495E;;
+  border-radius: 10px;
+  background-color: #eaecee;
+}
+
+
 #btnModal:hover{
   background-color: #34495E;
   color: #FDFEFE;

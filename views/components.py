@@ -11,6 +11,7 @@ def post(post: app.Post, linkable: bool = False):
         post=post,
         post_html_id=f'post-{post.id}',
         post_modal_id=f'post-modal-{post.id}',
+        post_modal_delete_id=f'post-modal-delete-{post.id}',
         linkable=linkable
     ))
 
